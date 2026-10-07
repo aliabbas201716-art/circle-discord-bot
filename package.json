@@ -1,0 +1,28 @@
+{
+  "name": "circle-discord-bot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Discord bot with moderation, auto-mod, and real-time dashboard sync",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "build": "echo 'No build step required for Node.js bot'"
+  },
+  "keywords": ["discord", "bot", "moderation", "dashboard"],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.15.3",
+    "@prisma/client": "^5.17.0",
+    "express": "^4.21.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "prisma": "^5.17.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

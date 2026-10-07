@@ -1,0 +1,46 @@
+const { SlashCommandBuilder, PermissionsBitField } = require("discord.js");
+const moderationRepo = require("../../database/repository/moderationRepo");
+const logRepo = require("../../database/repository/logRepo");
+
+module.exports = {
+  data: new SlashCommandBuilder()
+    .setName("ban")
+    .setDescription("Ban a user from the server")
+    .addUserOption(option =>
+      option.setName("user").setDescription("User to ban").setRequired(true)
+    )
+    .addStringOption(option =>
+      option.setName("reason").setDescription("Reason for ban").setRequired(false)
+    ),
+  async execute(interaction) {
+    if (!interaction.memberPermissions?.has(PermissionsBitField.Flags.BanMembers)) {
+      return interaction.reply({
+        content: "You don't have permission to ban members.",
+        ephemeral: true
+      });
+    }
+
+    const user = interaction.options.getUser("user");
+    const reason = interaction.options.getString("reason") || "No reason provided";
+
+    await interaction.guild?.members.ban(user, { reason });
+    await moderationRepo.addWarning(
+      interaction.guildId,
+      user.id,
+      interaction.user.id,
+      reason,
+      "ban"
+    );
+    await logRepo.addLog(interaction.guildId, {
+      eventType: "member_ban",
+      userId: user.id,
+      moderatorId: interaction.user.id,
+      payload: { reason }
+    });
+
+    await interaction.reply({
+      content: `Banned ${user.tag} for: ${reason}`,
+      ephemeral: false
+    });
+  }
+};

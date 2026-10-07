@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "src/index.js"
+    }
+  ],
+  "env": {
+    "DISCORD_TOKEN": "@discord_token",
+    "DATABASE_URL": "@database_url",
+    "BOT_API_SECRET": "@bot_api_secret",
+    "NODE_ENV": "production"
+  }
+}
