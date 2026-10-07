@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "package.json",
+      "src": "src/index.js",
       "use": "@vercel/node"
     }
   ],
@@ -16,6 +16,6 @@
     "DISCORD_TOKEN": "@discord_token",
     "DATABASE_URL": "@database_url",
     "BOT_API_SECRET": "@bot_api_secret",
-    "NODE_ENV": "production"
+    "BOT_API_PORT": "3001"
   }
 }

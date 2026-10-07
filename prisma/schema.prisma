@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model GuildConfig {
+  id                String   @id @default(cuid())
+  guildId           String   @unique
+  name              String?
+  prefix            String   @default("!")
+  welcomeChannel    String?
+  goodbyeChannel    String?
+  moderationChannel String?
+  logChannel        String?
+  suggestionChannel String?
+  starboardChannel  String?
+  autoRoleIds       String[] @default([])
+  blacklistedWords  String[] @default([])
+  inviteFilter      Boolean  @default(true)
+  mentionFilter     Boolean  @default(true)
+  spamFilter        Boolean  @default(true)
+  welcomeMessage    String?
+  goodbyeMessage    String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Warning {
+  id          String   @id @default(cuid())
+  guildId     String
+  userId      String
+  moderatorId String?
+  reason      String
+  type        String   @default("warn")
+  createdAt   DateTime @default(now())
+}
+
+model LogEntry {
+  id          String   @id @default(cuid())
+  guildId     String
+  eventType   String
+  userId      String?
+  moderatorId String?
+  channelId   String?
+  messageId   String?
+  payload     Json
+  createdAt   DateTime @default(now())
+}
+
+model Suggestion {
+  id        String   @id @default(cuid())
+  guildId   String
+  userId    String
+  content   String
+  status    String   @default("pending")
+  votes     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model FormSubmission {
+  id          String   @id @default(cuid())
+  guildId     String
+  userId      String
+  formType    String
+  payload     Json
+  status      String   @default("pending")
+  reviewedBy  String?
+  reviewedAt  DateTime?
+  createdAt   DateTime @default(now())
+}
+
+model ReactionRole {
+  id        String   @id @default(cuid())
+  guildId   String
+  messageId String
+  channelId String
+  emoji     String
+  roleId    String
+  label     String?
+  createdAt DateTime @default(now())
+}
